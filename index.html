@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050b14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JARVIS">
+<link rel="manifest" href="/manifest.json">
+<title>JARVIS • Personal AI</title>
+<style>
+:root{color-scheme:dark;--bg:#050b14;--panel:#0a1826;--line:#18374b;--cyan:#65e8ff;--muted:#7da5b9}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 25%,#0d2638 0%,var(--bg) 58%);color:#dff8ff;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+main{max-width:720px;margin:auto;padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 24px)}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:16px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border:1px solid var(--cyan);border-radius:50%;display:grid;place-items:center;color:var(--cyan);box-shadow:0 0 24px #35c8ef33;font-size:24px}
+h1{font-size:20px;letter-spacing:3px;margin:0}small,.muted{color:var(--muted)}.status{font-size:11px;letter-spacing:1px;border:1px solid #1e695d;border-radius:99px;padding:7px 9px;color:#65e8c2}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.metric,.panel{background:#0a1826cc;border:1px solid var(--line);border-radius:15px;padding:13px}.metric span{display:block;color:var(--muted);font-size:10px;letter-spacing:1px}.metric strong{display:block;margin-top:7px;font-size:13px}
+.core-wrap{text-align:center;padding:8px 0 18px}.core{width:190px;height:190px;margin:0 auto 10px;border:1px solid #38c9ef88;border-radius:50%;display:grid;place-items:center;position:relative;box-shadow:0 0 42px #38c9ef16,inset 0 0 38px #38c9ef14}
+.core:before,.core:after{content:"";position:absolute;inset:13px;border:1px dashed #65e8ff88;border-radius:50%;animation:spin 22s linear infinite}.core:after{inset:32px;border-style:solid;animation-direction:reverse;animation-duration:14s}
+.core-inner{width:70px;height:70px;border-radius:50%;background:#10394d;border:1px solid var(--cyan);display:grid;place-items:center;color:#c8faff;font-size:27px;z-index:1;box-shadow:0 0 30px #65e8ff44}
+@keyframes spin{to{transform:rotate(360deg)}}.section-title{font-size:13px;letter-spacing:1.5px;color:#bdefff;margin:0 0 12px}
+.tabs{display:flex;gap:7px;margin-bottom:12px}.tab,button{border:1px solid #245069;background:#0d2030;color:#bdefff;border-radius:10px;padding:11px 13px;font:inherit;cursor:pointer}.tab{flex:1;font-size:13px}.tab.active,button.primary{background:#12354a;border-color:var(--cyan)}.panel{margin-bottom:12px}.hidden{display:none!important}
+#messages{display:flex;flex-direction:column;gap:10px;max-height:36vh;overflow:auto;margin-bottom:12px}.msg{padding:11px 12px;border-radius:12px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45;font-size:14px}.msg.ai{background:#10283a;border:1px solid #1d455d;align-self:stretch}.msg.user{background:#14364a;align-self:flex-end;max-width:92%}
+textarea,input{width:100%;border:1px solid #245069;background:#06111c;color:#e5faff;border-radius:11px;padding:13px;font:inherit;outline:none}textarea{min-height:78px;resize:vertical}
+.row{display:flex;gap:8px;margin-top:9px}.row button{flex:1}.hint{font-size:11px;line-height:1.5;color:var(--muted)}.task{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #173348}.task input{width:auto}.task.done span{text-decoration:line-through;color:var(--muted)}
+footer{text-align:center;color:#4d8197;font-size:10px;letter-spacing:1px;padding:12px}
+</style>
+</head>
+<body><main>
+<header><div class="brand"><div class="logo">◉</div><div><h1>J.A.R.V.I.S.</h1><small>PERSONAL INTELLIGENCE SYSTEM</small></div></div><span class="status">● ONLINE</span></header>
+<div class="metrics"><div class="metric"><span>CORE</span><strong id="coreStatus">READY</strong></div><div class="metric"><span>VOICE</span><strong id="voiceStatus">AVAILABLE</strong></div><div class="metric"><span>MODE</span><strong id="modeStatus">ASSISTANT</strong></div></div>
+<div class="core-wrap"><div class="core"><div class="core-inner">⌁</div></div><div style="letter-spacing:2px;font-size:13px">SYSTEM INITIALISED</div><small>Awaiting your instructions.</small></div>
+<div class="tabs"><button class="tab active" data-tab="assistant">Assistant</button><button class="tab" data-tab="tasks">Tasks</button><button class="tab" data-tab="settings">Setup</button></div>
+<section id="assistant" class="panel">
+<h2 class="section-title">COMMAND CONSOLE</h2>
+<div id="messages"><div class="msg ai">JARVIS interface online. Add your access code in Setup, then ask me a question.</div></div>
+<textarea id="prompt" placeholder="What can I help you with, sir?"></textarea>
+<div class="row"><button class="primary" id="send">Send command ↗</button><button id="mic">🎙 Speak</button></div>
+<div class="row"><button id="speak">🔊 Read replies</button><button id="clear">Clear chat</button></div>
+<p class="hint">Voice input depends on browser support and may not work in every iOS configuration. Text chat works when the backend is deployed and configured.</p>
+</section>
+<section id="tasks" class="panel hidden"><h2 class="section-title">TASK MANAGER</h2><div class="row"><input id="taskInput" placeholder="Add a task…"><button id="addTask">Add</button></div><div id="taskList"></div><p class="hint">Tasks are saved locally on this device/browser. They are not synced between devices.</p></section>
+<section id="settings" class="panel hidden"><h2 class="section-title">CONFIGURATION</h2><label class="hint" for="access">JARVIS access code (set the same value as JARVIS_ACCESS_CODE on your server)</label><input id="access" type="password" autocomplete="current-password" placeholder="Enter your private access code"><div class="row"><button id="saveAccess" class="primary">Save on this device</button></div><p id="settingsMsg" class="hint">Your OpenAI API key belongs on the server only. Never paste it into this page.</p></section>
+<footer>JARVIS WEB PROTOTYPE • YOUR COMMAND CENTRE</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);let readReplies=false;
+const getAccess=()=>localStorage.getItem('jarvis_access')||'';
+function addMessage(text,who){const el=document.createElement('div');el.className='msg '+who;el.textContent=text;$('messages').appendChild(el);$('messages').scrollTop=$('messages').scrollHeight;return el}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['assistant','tasks','settings'].forEach(id=>$(id).classList.toggle('hidden',id!==b.dataset.tab))}));
+$('saveAccess').onclick=()=>{localStorage.setItem('jarvis_access',$('access').value.trim());$('settingsMsg').textContent='Access code saved on this device.'};
+$('send').onclick=async()=>{const text=$('prompt').value.trim();if(!text)return;$('prompt').value='';addMessage(text,'user');const pending=addMessage('Processing your request…','ai');$('send').disabled=true;
+try{const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','x-jarvis-access':getAccess()},body:JSON.stringify({message:text})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Request failed');pending.textContent=data.reply||'No reply returned.';if(readReplies&&'speechSynthesis'in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(pending.textContent))}}
+catch(e){pending.textContent='Could not reach JARVIS: '+e.message+'. Check deployment, API configuration and access code.'}finally{$('send').disabled=false}};
+$('prompt').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('send').click()}});
+$('mic').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){addMessage('Speech recognition is not available in this browser. Please use text input.','ai');return}const r=new SR();r.lang='en-GB';r.interimResults=false;r.onstart=()=>{$('voiceStatus').textContent='LISTENING'};r.onresult=e=>{$('prompt').value=e.results[0][0].transcript};r.onerror=()=>addMessage('Microphone unavailable or permission denied.','ai');r.onend=()=>{$('voiceStatus').textContent='AVAILABLE'};r.start()};
+$('speak').onclick=()=>{readReplies=!readReplies;$('speak').textContent=readReplies?'🔊 Replies on':'🔊 Read replies';if(!readReplies&&'speechSynthesis'in window)speechSynthesis.cancel()};
+$('clear').onclick=()=>$('messages').replaceChildren();
+function renderTasks(){const list=$('taskList');list.replaceChildren();let tasks=JSON.parse(localStorage.getItem('jarvis_tasks')||'[]');tasks.forEach((t,i)=>{const row=document.createElement('div');row.className='task'+(t.done?' done':'');const cb=document.createElement('input');cb.type='checkbox';cb.checked=t.done;cb.onchange=()=>{tasks[i].done=cb.checked;localStorage.setItem('jarvis_tasks',JSON.stringify(tasks));renderTasks()};const label=document.createElement('span');label.textContent=t.text;label.style.flex='1';const del=document.createElement('button');del.textContent='×';del.onclick=()=>{tasks.splice(i,1);localStorage.setItem('jarvis_tasks',JSON.stringify(tasks));renderTasks()};row.append(cb,label,del);list.append(row)})}
+$('addTask').onclick=()=>{const text=$('taskInput').value.trim();if(!text)return;const tasks=JSON.parse(localStorage.getItem('jarvis_tasks')||'[]');tasks.push({text,done:false});localStorage.setItem('jarvis_tasks',JSON.stringify(tasks));$('taskInput').value='';renderTasks()};renderTasks();
+</script></body></html>

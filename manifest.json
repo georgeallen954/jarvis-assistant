@@ -1,0 +1,9 @@
+{
+  "name": "JARVIS Personal AI",
+  "short_name": "JARVIS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050b14",
+  "theme_color": "#050b14",
+  "description": "A personal AI command centre"
+}
